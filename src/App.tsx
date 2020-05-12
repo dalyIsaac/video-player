@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 
-import { Button } from "grommet";
-import Video from "./Video";
+import { Button } from "@material-ui/core";
+import Video from "./components/Video";
 
 export default function App(): JSX.Element {
   const [src, setSrc] = useState("");
@@ -25,7 +25,9 @@ export default function App(): JSX.Element {
 
   return (
     <div className="App">
-      <Button primary label="Open new video" onClick={onOpenClick} />
+      <Button variant="contained" color="primary" onClick={onOpenClick}>
+        Open new video
+      </Button>
       <input
         ref={inputRef}
         type="file"

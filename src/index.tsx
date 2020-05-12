@@ -1,28 +1,12 @@
 import * as serviceWorker from "./serviceWorker";
 
-import { Grommet, ThemeType } from "grommet";
-
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
 
-const theme: ThemeType = {
-  global: {
-    font: {
-      family: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-               'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-               sans-serif`,
-      size: "18px",
-      height: "20px",
-    },
-  },
-};
-
 ReactDOM.render(
   <React.StrictMode>
-    <Grommet theme={theme}>
-      <App />
-    </Grommet>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
