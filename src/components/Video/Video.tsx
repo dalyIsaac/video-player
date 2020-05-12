@@ -53,7 +53,7 @@ export default function Video({ src }: IVideo): JSX.Element {
       <VideoControls
         isPaused={isPaused}
         togglePaused={togglePaused}
-        length={length}
+        duration={length}
         currentTime={currentTime}
         updateCurrentTime={manualUpdateCurrentTime}
       />
