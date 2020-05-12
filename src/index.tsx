@@ -11,7 +11,7 @@ const App = lazy(() => import("./App"));
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={Fallback}>
+    <Suspense fallback={<Fallback />}>
       <App />
     </Suspense>
   </React.StrictMode>,
@@ -21,4 +21,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register();
+serviceWorker.register({ onSuccess: () => console.log("Success") });
