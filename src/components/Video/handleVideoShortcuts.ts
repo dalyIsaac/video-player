@@ -4,10 +4,7 @@ export interface KeyboardShortcut {
   onKeyDown: () => void;
 }
 
-function keyboardMatch(
-  e: React.KeyboardEvent,
-  shortcut: KeyboardShortcut
-): boolean {
+function keyboardMatch(e: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
   return (
     e.key === shortcut.key &&
     (!shortcut.ctrlKey || e.ctrlKey === shortcut.ctrlKey)
@@ -15,7 +12,7 @@ function keyboardMatch(
 }
 
 export function handleKeyboardShortcuts(
-  e: React.KeyboardEvent,
+  e: KeyboardEvent,
   shortcuts: KeyboardShortcut[]
 ) {
   e.preventDefault();
@@ -32,10 +29,7 @@ export interface WheelShortcuts {
   y: (val: number) => void;
 }
 
-export function handleWheelShortcuts(
-  e: React.WheelEvent,
-  shortcuts: WheelShortcuts
-) {
+export function handleWheelShortcuts(e: WheelEvent, shortcuts: WheelShortcuts) {
   if (e.deltaX) {
     shortcuts.x(e.deltaX);
   }
