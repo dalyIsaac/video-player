@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
+    padding: "16px",
   },
   interactiveRoot: {
     display: "flex",

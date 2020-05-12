@@ -9,6 +9,7 @@ import { PLAYBACKRATE_MIN, PLAYBACKRATE_STEP } from "../PlaybackRate";
 import React, { useCallback, useRef, useState } from "react";
 
 import VideoControls from "../VideoControls";
+import VideoTitle from "../VideoTitle";
 import { makeStyles } from "@material-ui/core";
 import useEventListener from "@use-it/event-listener";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -18,6 +19,7 @@ const TRAVEL_DISTANCE = 10;
 export interface IVideo {
   src?: string;
   selectSrc: () => void;
+  title?: string;
 }
 
 const useStyles = makeStyles({
@@ -26,11 +28,11 @@ const useStyles = makeStyles({
     height: "100vh",
   },
   video: {
-    width: "calc(100vw - 20px)",
+    width: "100vw",
   },
 });
 
-export default function Video({ src, selectSrc }: IVideo): JSX.Element {
+export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
 
@@ -210,6 +212,7 @@ export default function Video({ src, selectSrc }: IVideo): JSX.Element {
 
   return (
     <div className={styles.root}>
+      <VideoTitle>{title}</VideoTitle>
       <video
         className={styles.video}
         ref={videoRef}

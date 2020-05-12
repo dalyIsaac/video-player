@@ -30,12 +30,14 @@ export default function App(): JSX.Element {
   );
 
   const [src, setSrc] = useState("");
+  const [title, setTitle] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onSelectVideo = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.currentTarget.files?.length) {
         const file = e.currentTarget.files[0];
+        setTitle(file.name);
         URL.revokeObjectURL(src);
         const objectURL = URL.createObjectURL(file);
         setSrc(objectURL);
@@ -61,7 +63,7 @@ export default function App(): JSX.Element {
           onChange={onSelectVideo}
           style={{ display: "none" }}
         />
-        <Video src={src} selectSrc={selectSrc} />
+        <Video src={src} selectSrc={selectSrc} title={title} />
       </div>
     </ThemeProvider>
   );
