@@ -16,5 +16,9 @@ export default function MuteButton({
     return isMuted ? <VolumeMute /> : <VolumeUp />;
   }, [isMuted]);
 
-  return <IconButton onClick={toggleMuted}>{audibleIcon}</IconButton>;
+  return (
+    <IconButton aria-label="Toggle muted" onClick={toggleMuted}>
+      {audibleIcon}
+    </IconButton>
+  );
 }

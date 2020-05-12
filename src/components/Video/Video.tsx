@@ -11,7 +11,7 @@ import React, { useCallback, useRef, useState } from "react";
 import VideoControls from "../VideoControls";
 import VideoTitle from "../VideoTitle";
 import { makeStyles } from "@material-ui/core";
-import useEventListener from "@use-it/event-listener";
+import useEventListener from "react-use-event-listener";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const TRAVEL_DISTANCE = 10;
@@ -171,13 +171,13 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   ];
 
   const onKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
+    (e: KeyboardEvent) => {
       handleKeyboardShortcuts(e, keyboardShortcuts);
     },
     [keyboardShortcuts]
   );
 
-  useEventListener("keydown", onKeyDown);
+  useEventListener("keydown", onKeyDown, document);
   //#endregion
 
   //#region Wheel shortcuts
@@ -201,13 +201,13 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   };
 
   const onWheel = useCallback(
-    (e: React.WheelEvent) => {
+    (e: WheelEvent) => {
       handleWheelShortcuts(e, wheelShortcuts);
     },
     [wheelShortcuts]
   );
 
-  useEventListener("wheel", onWheel);
+  useEventListener("wheel", onWheel, document, { passive: true });
   //#endregion
 
   return (
