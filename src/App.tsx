@@ -1,9 +1,35 @@
-import React, { useCallback, useRef, useState } from "react";
+import {
+  Button,
+  ThemeProvider,
+  createMuiTheme,
+  makeStyles,
+  useMediaQuery,
+} from "@material-ui/core";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
-import { Button } from "@material-ui/core";
 import Video from "./components/Video";
 
+const useStyles = makeStyles({
+  appRoot: {
+    height: "100vh",
+    width: "100vw",
+  },
+});
+
 export default function App(): JSX.Element {
+  const styles = useStyles();
+
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
+
   const [src, setSrc] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -24,18 +50,23 @@ export default function App(): JSX.Element {
   }, []);
 
   return (
-    <div className="App">
-      <Button variant="contained" color="primary" onClick={onOpenClick}>
-        Open new video
-      </Button>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="video/*"
-        onChange={onSelectVideo}
-        style={{ display: "none" }}
-      />
-      <Video src={src} />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div
+        style={{ backgroundColor: theme.palette.background.default }}
+        className={styles.appRoot}
+      >
+        <Button variant="contained" color="primary" onClick={onOpenClick}>
+          Open new video
+        </Button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="video/*"
+          onChange={onSelectVideo}
+          style={{ display: "none" }}
+        />
+        <Video src={src} />
+      </div>
+    </ThemeProvider>
   );
 }
