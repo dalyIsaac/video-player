@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 
-import VideoControls from "./VideoControls";
+import VideoControls from "../VideoControls";
 import styles from "./Video.module.css";
 
 export interface IVideo {
