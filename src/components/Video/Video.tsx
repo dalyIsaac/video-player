@@ -9,9 +9,8 @@ export interface IVideo {
 
 export default function Video({ src }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
 
+  //#region Play/pause
   const [isPaused, setIsPaused] = useState(true);
   const togglePaused = useCallback(() => {
     if (isPaused) {
@@ -29,20 +28,18 @@ export default function Video({ src }: IVideo): JSX.Element {
   const onPlay = useCallback(() => {
     setIsPaused(false);
   }, []);
+  //#endregion
 
+  //#region Mute
   const [isMuted, setIsMuted] = useState(false);
   const toggleMuted = useCallback(() => {
     setIsMuted(!isMuted);
   }, [isMuted]);
+  //#endregion
 
-  const onLoadedMetadata = useCallback(() => {
-    const video = videoRef.current;
-    setDuration(video?.duration || 0);
-
-    // Play
-    setIsPaused(false);
-    video?.play();
-  }, []);
+  //#region currentTime and duration
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
   const manualUpdateCurrentTime = useCallback((value: number) => {
     if (videoRef.current) {
@@ -56,6 +53,16 @@ export default function Video({ src }: IVideo): JSX.Element {
     if (time) {
       setCurrentTime(time);
     }
+  }, []);
+  //#endregion
+
+  const onLoadedMetadata = useCallback(() => {
+    const video = videoRef.current;
+    setDuration(video?.duration || 0);
+
+    // Play
+    setIsPaused(false);
+    video?.play();
   }, []);
 
   return (
