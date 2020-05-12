@@ -1,14 +1,21 @@
 import React, { useCallback, useRef, useState } from "react";
 
 import VideoControls from "../VideoControls";
-import styles from "./Video.module.css";
+import { makeStyles } from "@material-ui/core";
 
 export interface IVideo {
   src?: string;
 }
 
+const useStyles = makeStyles({
+  video: {
+    width: "calc(100vw - 20px)",
+  },
+});
+
 export default function Video({ src }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const styles = useStyles();
 
   //#region Play/pause
   const [isPaused, setIsPaused] = useState(true);

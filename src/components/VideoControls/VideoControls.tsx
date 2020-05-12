@@ -4,7 +4,7 @@ import PlayButton from "../Play";
 import PlaybackRate from "../PlaybackRate";
 import React from "react";
 import Seeker from "../Seeker";
-import styles from "./VideoControls.module.css";
+import { makeStyles } from "@material-ui/core";
 
 export interface IVideoControls {
   duration: number;
@@ -18,6 +18,22 @@ export interface IVideoControls {
   updatePlaybackRate: (value: string) => void;
 }
 
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  interactiveRoot: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  interactiveRootLeft: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+});
+
 export default function VideoControls({
   duration,
   currentTime,
@@ -29,16 +45,17 @@ export default function VideoControls({
   playbackRate,
   updatePlaybackRate,
 }: IVideoControls): JSX.Element {
+  const styles = useStyles();
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.root}>
       <Seeker
         currentTime={currentTime}
         duration={duration}
         updateCurrentTime={updateCurrentTime}
       />
 
-      <div className={styles.interactiveWrapper}>
-        <div className={styles.interactiveWrapperLeft}>
+      <div className={styles.interactiveRoot}>
+        <div className={styles.interactiveRootLeft}>
           <PlayButton isPaused={isPaused} togglePaused={togglePaused} />
           <MuteButton isMuted={isMuted} toggleMuted={toggleMuted} />
           <CurrentTimeLabel currentTime={currentTime} duration={duration} />
