@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 
+import { PLAYBACKRATE_STEP } from "./utils";
 import { TextField } from "@material-ui/core";
 
 export interface IPlaybackRate {
@@ -31,7 +32,7 @@ export default function PlaybackRate({
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      inputProps={{ step: 0.2 }}
+      inputProps={{ step: PLAYBACKRATE_STEP }}
     />
   );
 }

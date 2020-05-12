@@ -1,11 +1,10 @@
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
-  Button,
   ThemeProvider,
   createMuiTheme,
   makeStyles,
   useMediaQuery,
 } from "@material-ui/core";
-import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import Video from "./components/Video";
 
@@ -45,7 +44,7 @@ export default function App(): JSX.Element {
     [src]
   );
 
-  const onOpenClick = useCallback(() => {
+  const selectSrc = useCallback(() => {
     inputRef.current?.click();
   }, []);
 
@@ -55,9 +54,6 @@ export default function App(): JSX.Element {
         style={{ backgroundColor: theme.palette.background.default }}
         className={styles.appRoot}
       >
-        <Button variant="contained" color="primary" onClick={onOpenClick}>
-          Open new video
-        </Button>
         <input
           ref={inputRef}
           type="file"
@@ -65,7 +61,7 @@ export default function App(): JSX.Element {
           onChange={onSelectVideo}
           style={{ display: "none" }}
         />
-        <Video src={src} />
+        <Video src={src} selectSrc={selectSrc} />
       </div>
     </ThemeProvider>
   );
