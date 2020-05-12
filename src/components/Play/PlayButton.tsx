@@ -16,5 +16,9 @@ export default function PlayButton({
     return isPaused ? <PlayArrow /> : <Pause />;
   }, [isPaused]);
 
-  return <IconButton onClick={togglePaused}>{playPauseIcon}</IconButton>;
+  return (
+    <IconButton aria-label="Toggle paused" onClick={togglePaused}>
+      {playPauseIcon}
+    </IconButton>
+  );
 }

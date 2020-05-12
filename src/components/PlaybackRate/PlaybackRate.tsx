@@ -28,11 +28,15 @@ export default function PlaybackRate({
 
   return (
     <TextField
+      aria-label="Video playback rate"
       type="number"
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      inputProps={{ step: PLAYBACKRATE_STEP }}
+      inputProps={{
+        step: PLAYBACKRATE_STEP,
+        "aria-label": "Video playback rate",
+      }}
     />
   );
 }

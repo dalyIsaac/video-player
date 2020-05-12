@@ -57,6 +57,7 @@ export default function App(): JSX.Element {
         className={styles.appRoot}
       >
         <input
+          aria-label="Press Ctrl+O to open a video from the local filesystem"
           ref={inputRef}
           type="file"
           accept="video/*"
