@@ -9,10 +9,10 @@ export interface IVideo {
 
 export default function Video({ src }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [length, setLength] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [isPaused, setIsPaused] = useState(true);
 
+  const [isPaused, setIsPaused] = useState(true);
   const togglePaused = useCallback(() => {
     if (isPaused) {
       videoRef.current?.play();
@@ -22,10 +22,19 @@ export default function Video({ src }: IVideo): JSX.Element {
     setIsPaused(!isPaused);
   }, [isPaused]);
 
+  const [isMuted, setIsMuted] = useState(false);
+  const toggleMuted = useCallback(() => {
+    setIsMuted(!isMuted);
+  }, [isMuted]);
+
   const onLoadedMetadata = useCallback(() => {
-    setLength(videoRef.current?.duration || 0);
-    togglePaused();
-  }, [togglePaused]);
+    const video = videoRef.current;
+    setDuration(video?.duration || 0);
+
+    // Play
+    setIsPaused(false);
+    video?.play();
+  }, []);
 
   const manualUpdateCurrentTime = useCallback((value: number) => {
     if (videoRef.current) {
@@ -47,13 +56,16 @@ export default function Video({ src }: IVideo): JSX.Element {
         className={styles.video}
         ref={videoRef}
         src={src}
+        muted={isMuted}
         onLoadedMetadata={onLoadedMetadata}
         onTimeUpdate={onTimeUpdate}
       />
       <VideoControls
         isPaused={isPaused}
         togglePaused={togglePaused}
-        duration={length}
+        isMuted={isMuted}
+        toggleMuted={toggleMuted}
+        duration={duration}
         currentTime={currentTime}
         updateCurrentTime={manualUpdateCurrentTime}
       />

@@ -1,4 +1,5 @@
 import CurrentTimeLabel from "../CurrentTimeLabel";
+import MuteButton from "../MuteButton";
 import PlayButton from "../Play";
 import React from "react";
 import Seeker from "../Seeker";
@@ -9,6 +10,8 @@ export interface IVideoControls {
   currentTime: number;
   isPaused: boolean;
   togglePaused: () => void;
+  isMuted: boolean;
+  toggleMuted: () => void;
   updateCurrentTime: (value: number) => void;
 }
 
@@ -17,6 +20,8 @@ export default function VideoControls({
   currentTime,
   isPaused,
   togglePaused,
+  isMuted,
+  toggleMuted,
   updateCurrentTime,
 }: IVideoControls): JSX.Element {
   return (
@@ -30,6 +35,7 @@ export default function VideoControls({
       <div className={styles.interactiveWrapper}>
         <div className={styles.interactiveWrapperLeft}>
           <PlayButton isPaused={isPaused} togglePaused={togglePaused} />
+          <MuteButton isMuted={isMuted} toggleMuted={toggleMuted} />
           <CurrentTimeLabel currentTime={currentTime} duration={duration} />
         </div>
       </div>
