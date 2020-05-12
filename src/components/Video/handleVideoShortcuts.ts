@@ -15,10 +15,10 @@ export function handleKeyboardShortcuts(
   e: KeyboardEvent,
   shortcuts: KeyboardShortcut[]
 ) {
-  e.preventDefault();
   for (const shortcut of shortcuts) {
     if (keyboardMatch(e, shortcut)) {
       shortcut.onKeyDown();
+      e.preventDefault();
       return;
     }
   }
