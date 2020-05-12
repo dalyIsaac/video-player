@@ -56,6 +56,24 @@ export default function Video({ src }: IVideo): JSX.Element {
   }, []);
   //#endregion
 
+  //#region Playback rate
+  const [playbackRate, setPlaybackRate] = useState("1.0");
+
+  const onRateChange = useCallback(() => {
+    setPlaybackRate(String(videoRef.current?.playbackRate || 1.0));
+  }, []);
+
+  const updatePlaybackRate = useCallback((valueStr: string) => {
+    const value = parseFloat(valueStr);
+    if (isNaN(value)) {
+      setPlaybackRate("");
+    } else if (videoRef.current) {
+      setPlaybackRate(valueStr);
+      videoRef.current.playbackRate = value;
+    }
+  }, []);
+  //#endregion
+
   const onLoadedMetadata = useCallback(() => {
     const video = videoRef.current;
     setDuration(video?.duration || 0);
@@ -63,7 +81,13 @@ export default function Video({ src }: IVideo): JSX.Element {
     // Play
     setIsPaused(false);
     video?.play();
-  }, []);
+
+    // Playback rate
+    const rate = parseFloat(playbackRate);
+    if (!isNaN(rate) && video) {
+      video.playbackRate = rate;
+    }
+  }, [playbackRate]);
 
   return (
     <div>
@@ -76,6 +100,7 @@ export default function Video({ src }: IVideo): JSX.Element {
         onTimeUpdate={onTimeUpdate}
         onPause={onPause}
         onPlay={onPlay}
+        onRateChange={onRateChange}
       />
       <VideoControls
         isPaused={isPaused}
@@ -85,6 +110,8 @@ export default function Video({ src }: IVideo): JSX.Element {
         duration={duration}
         currentTime={currentTime}
         updateCurrentTime={manualUpdateCurrentTime}
+        playbackRate={playbackRate}
+        updatePlaybackRate={updatePlaybackRate}
       />
     </div>
   );

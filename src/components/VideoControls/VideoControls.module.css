@@ -5,6 +5,7 @@
 
 .interactiveWrapper {
   display: flex;
+  justify-content: space-between;
 }
 
 .interactiveWrapperLeft {
