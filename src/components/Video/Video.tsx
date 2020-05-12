@@ -22,6 +22,14 @@ export default function Video({ src }: IVideo): JSX.Element {
     setIsPaused(!isPaused);
   }, [isPaused]);
 
+  const onPause = useCallback(() => {
+    setIsPaused(true);
+  }, []);
+
+  const onPlay = useCallback(() => {
+    setIsPaused(false);
+  }, []);
+
   const [isMuted, setIsMuted] = useState(false);
   const toggleMuted = useCallback(() => {
     setIsMuted(!isMuted);
@@ -59,6 +67,8 @@ export default function Video({ src }: IVideo): JSX.Element {
         muted={isMuted}
         onLoadedMetadata={onLoadedMetadata}
         onTimeUpdate={onTimeUpdate}
+        onPause={onPause}
+        onPlay={onPlay}
       />
       <VideoControls
         isPaused={isPaused}
