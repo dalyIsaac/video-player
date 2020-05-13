@@ -12,6 +12,9 @@ const useStyles = makeStyles({
   },
 });
 
+// NOTE: this is hard coded according to Typography
+export const VIDEO_TITLE_HEIGHT = "64px";
+
 export default function VideoTitle({ children }: IVideoTitle): JSX.Element {
   const theme = useTheme();
   const styles = useStyles();
@@ -22,7 +25,7 @@ export default function VideoTitle({ children }: IVideoTitle): JSX.Element {
       style={{ color: theme.palette.text.primary }}
       className={styles.root}
     >
-      {children}
+      {children || "Open a video file (Ctrl + O)"}
     </Typography>
   );
 }

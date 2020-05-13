@@ -1,5 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 
+import { VIDEO_CONTROLS_HEIGHT } from "../VideoControls/VideoControls";
+import { VIDEO_TITLE_HEIGHT } from "../VideoTitle/VideoTitle";
 import VideoControls from "../VideoControls";
 import VideoTitle from "../VideoTitle";
 import { makeStyles } from "@material-ui/core";
@@ -19,10 +21,13 @@ export interface IVideo {
 
 const useStyles = makeStyles({
   root: {
-    width: "100vw",
+    // width: "100vw",
     height: "100vh",
   },
   video: {
+    height:
+      `calc(100vh - ${VIDEO_TITLE_HEIGHT} ` +
+      `- ${VIDEO_CONTROLS_HEIGHT} - 10px)`,
     width: "100vw",
   },
 });

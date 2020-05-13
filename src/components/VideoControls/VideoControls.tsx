@@ -18,11 +18,16 @@ export interface IVideoControls {
   updatePlaybackRate: (value: string) => void;
 }
 
+const height = 76;
+const padding = 16;
+export const VIDEO_CONTROLS_HEIGHT = `${padding * 2 + height}px`;
+
 const useStyles = makeStyles({
   root: {
+    height,
     display: "flex",
     flexDirection: "column",
-    padding: "16px",
+    padding,
   },
   interactiveRoot: {
     display: "flex",

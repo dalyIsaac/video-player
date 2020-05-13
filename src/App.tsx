@@ -2,22 +2,12 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   ThemeProvider,
   createMuiTheme,
-  makeStyles,
   useMediaQuery,
 } from "@material-ui/core";
 
 import Video from "./components/Video";
 
-const useStyles = makeStyles({
-  appRoot: {
-    height: "100vh",
-    width: "100vw",
-  },
-});
-
 export default function App(): JSX.Element {
-  const styles = useStyles();
-
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
@@ -52,10 +42,7 @@ export default function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <div
-        style={{ backgroundColor: theme.palette.background.default }}
-        className={styles.appRoot}
-      >
+      <div style={{ backgroundColor: theme.palette.background.default }}>
         <input
           aria-label="Press Ctrl+O to open a video from the local filesystem"
           ref={inputRef}
