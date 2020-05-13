@@ -26,6 +26,7 @@ const useStyles = makeStyles({
   root: {
     height,
     display: "flex",
+    alignContent: "center",
     flexDirection: "column",
     padding,
   },
@@ -64,7 +65,11 @@ export default function VideoControls({
         <div className={styles.interactiveRootLeft}>
           <PlayButton isPaused={isPaused} togglePaused={togglePaused} />
           <MuteButton isMuted={isMuted} toggleMuted={toggleMuted} />
-          <CurrentTimeLabel currentTime={currentTime} duration={duration} />
+          <CurrentTimeLabel
+            currentTime={currentTime}
+            duration={duration}
+            playbackRate={playbackRate}
+          />
         </div>
         <PlaybackRate value={playbackRate} updateValue={updatePlaybackRate} />
       </div>

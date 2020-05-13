@@ -1,17 +1,25 @@
 import React, { useCallback } from "react";
+import { TextField, makeStyles } from "@material-ui/core";
 
 import { PLAYBACKRATE_STEP } from "./utils";
-import { TextField } from "@material-ui/core";
 
 export interface IPlaybackRate {
   value: string;
   updateValue: (value: string) => void;
 }
 
+const useStyles = makeStyles({
+  root: {
+    padding: 16,
+  },
+});
+
 export default function PlaybackRate({
   value,
   updateValue,
 }: IPlaybackRate): JSX.Element {
+  const styles = useStyles();
+
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       updateValue(e.currentTarget.value);
@@ -28,6 +36,7 @@ export default function PlaybackRate({
 
   return (
     <TextField
+      className={styles.root}
       aria-label="Video playback rate"
       type="number"
       value={value}
