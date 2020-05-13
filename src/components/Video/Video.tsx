@@ -1,19 +1,15 @@
-import {
-  KeyboardShortcut,
-  WheelShortcuts,
-  handleKeyboardShortcuts,
-  handleWheelShortcuts,
-} from "./handleVideoShortcuts";
-import { PLAYBACKRATE_MAX, roundPlaybackRate } from "../PlaybackRate/utils";
-import { PLAYBACKRATE_MIN, PLAYBACKRATE_STEP } from "../PlaybackRate";
 import React, { useCallback, useRef, useState } from "react";
 
 import VideoControls from "../VideoControls";
 import VideoTitle from "../VideoTitle";
 import { makeStyles } from "@material-ui/core";
+import useCurrentTime from "./useCurrentTime";
 import useEventListener from "react-use-event-listener";
-
-const TRAVEL_DISTANCE = 10;
+import useKeyboardShortcuts from "./useKeyboardShortcuts";
+import useMute from "./useMute";
+import usePause from "./usePause";
+import usePlaybackRate from "./usePlaybackRate";
+import useWheelShortcuts from "./useWheelShortcuts";
 
 export interface IVideo {
   src?: string;
@@ -35,115 +31,47 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
 
-  //#region Play/pause
-  const [isPaused, setIsPaused] = useState(true);
-  const togglePaused = useCallback(() => {
-    if (isPaused) {
-      videoRef.current?.play();
-    } else {
-      videoRef.current?.pause();
-    }
-    setIsPaused(!isPaused);
-  }, [isPaused]);
-
-  const onPause = useCallback(() => {
-    setIsPaused(true);
-  }, []);
-
-  const onPlay = useCallback(() => {
-    setIsPaused(false);
-  }, []);
-  //#endregion
-
-  //#region Mute
-  const [isMuted, setIsMuted] = useState(false);
-  const toggleMuted = useCallback(() => {
-    setIsMuted(!isMuted);
-  }, [isMuted]);
-  //#endregion
-
-  //#region currentTime and duration
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
 
-  const manualUpdateCurrentTime = useCallback((value: number) => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = value;
-    }
-    setCurrentTime(value);
-  }, []);
-
-  const addToCurrentTime = useCallback(
-    (delta: number) => {
-      if (videoRef.current) {
-        let value = videoRef.current.currentTime + delta;
-        if (value < 0) {
-          value = 0;
-        } else if (value > duration) {
-          value = duration;
-        }
-
-        manualUpdateCurrentTime(value);
-      }
-    },
-    [duration, manualUpdateCurrentTime]
+  const { isPaused, setIsPaused, togglePaused, onPause, onPlay } = usePause(
+    videoRef.current,
+    isVideoLoaded
   );
 
-  const leftArrow = useCallback(() => {
-    addToCurrentTime(-TRAVEL_DISTANCE);
-  }, [addToCurrentTime]);
+  const { isMuted, toggleMuted } = useMute(videoRef.current);
 
-  const rightArrow = useCallback(() => {
-    addToCurrentTime(TRAVEL_DISTANCE);
-  }, [addToCurrentTime]);
+  const {
+    currentTime,
+    onTimeUpdate,
+    updateCurrentTime,
+    addToCurrentTime,
+  } = useCurrentTime(videoRef.current, duration);
 
-  const onTimeUpdate = useCallback(() => {
-    const time = videoRef.current?.currentTime;
-    if (time) {
-      setCurrentTime(time);
-    }
-  }, []);
-  //#endregion
+  const {
+    playbackRate,
+    updatePlaybackRate,
+    addToPlaybackRate,
+  } = usePlaybackRate(videoRef.current);
 
-  //#region Playback rate
-  const [playbackRate, setPlaybackRate] = useState("1.0");
+  // Keyboard shortcuts
+  const onKeyDown = useKeyboardShortcuts({
+    addToCurrentTime,
+    addToPlaybackRate,
+    selectSrc,
+    toggleMuted,
+    togglePaused,
+  });
+  useEventListener("keydown", onKeyDown, document);
 
-  const updatePlaybackRate = useCallback((valueStr: string) => {
-    let value = parseFloat(valueStr);
-    if (isNaN(value)) {
-      setPlaybackRate("");
-    } else if (videoRef.current) {
-      if (value < PLAYBACKRATE_MIN) {
-        value = PLAYBACKRATE_MIN;
-      } else if (value > PLAYBACKRATE_MAX) {
-        value = PLAYBACKRATE_MAX;
-      }
-      valueStr = roundPlaybackRate(value);
-      setPlaybackRate(valueStr);
-      videoRef.current.playbackRate = value;
-    }
-  }, []);
+  // Wheel shortcuts
+  const onWheel = useWheelShortcuts({ addToCurrentTime, addToPlaybackRate });
+  useEventListener("wheel", onWheel, document, { passive: true });
 
-  const addToPlaybackRate = useCallback(
-    (delta: number) => {
-      if (videoRef.current) {
-        updatePlaybackRate(String(videoRef.current.playbackRate + delta));
-      }
-    },
-    [updatePlaybackRate]
-  );
-
-  const upArrow = useCallback(() => {
-    addToPlaybackRate(PLAYBACKRATE_STEP);
-  }, [addToPlaybackRate]);
-
-  const downArrow = useCallback(() => {
-    addToPlaybackRate(-PLAYBACKRATE_STEP);
-  }, [addToPlaybackRate]);
-  //#endregion
-
+  // On loaded
   const onLoadedMetadata = useCallback(() => {
     const video = videoRef.current;
+    setIsVideoLoaded(true);
     setDuration(video?.duration || 0);
 
     // Play
@@ -155,58 +83,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     if (!isNaN(rate) && video) {
       video.playbackRate = rate;
     }
-  }, [playbackRate]);
-
-  //#region Keyboard shortcuts
-  const keyboardShortcuts: KeyboardShortcut[] = [
-    { key: "m", onKeyDown: toggleMuted },
-    { key: " ", onKeyDown: togglePaused },
-    { key: "o", ctrlKey: true, onKeyDown: selectSrc },
-    { key: "ArrowLeft", onKeyDown: leftArrow },
-    { key: "ArrowRight", onKeyDown: rightArrow },
-    { key: "ArrowUp", onKeyDown: upArrow },
-    { key: "ArrowDown", onKeyDown: downArrow },
-  ];
-
-  const onKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      handleKeyboardShortcuts(e, keyboardShortcuts);
-    },
-    [keyboardShortcuts]
-  );
-
-  useEventListener("keydown", onKeyDown, document);
-  //#endregion
-
-  //#region Wheel shortcuts
-  const xWheel = useCallback(
-    (val: number) => {
-      addToCurrentTime(TRAVEL_DISTANCE * (val / 1000));
-    },
-    [addToCurrentTime]
-  );
-
-  const yWheel = useCallback(
-    (val: number) => {
-      addToPlaybackRate(PLAYBACKRATE_STEP * -(val / 100));
-    },
-    [addToPlaybackRate]
-  );
-
-  const wheelShortcuts: WheelShortcuts = {
-    x: xWheel,
-    y: yWheel,
-  };
-
-  const onWheel = useCallback(
-    (e: WheelEvent) => {
-      handleWheelShortcuts(e, wheelShortcuts);
-    },
-    [wheelShortcuts]
-  );
-
-  useEventListener("wheel", onWheel, document, { passive: true });
-  //#endregion
+  }, [playbackRate, setIsPaused]);
 
   return (
     <div className={styles.root}>
@@ -228,7 +105,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
         toggleMuted={toggleMuted}
         duration={duration}
         currentTime={currentTime}
-        updateCurrentTime={manualUpdateCurrentTime}
+        updateCurrentTime={updateCurrentTime}
         playbackRate={playbackRate}
         updatePlaybackRate={updatePlaybackRate}
       />
