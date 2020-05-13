@@ -6,8 +6,8 @@ export default function useCurrentTime(video: Video, duration: number) {
   const [currentTime, setCurrentTime] = useState(0);
 
   const updateCurrentTime = useCallback(
-    (value: number) => {
-      if (video) {
+    (value: number, isEvent = false) => {
+      if (video && !isEvent) {
         video.currentTime = value;
       }
       setCurrentTime(value);
@@ -35,7 +35,7 @@ export default function useCurrentTime(video: Video, duration: number) {
   const onTimeUpdate = useCallback(() => {
     const time = video?.currentTime;
     if (time) {
-      updateCurrentTime(time);
+      updateCurrentTime(time, true);
     }
   }, [updateCurrentTime, video]);
 
