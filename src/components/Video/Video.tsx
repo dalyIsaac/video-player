@@ -12,7 +12,6 @@ import VideoControls from "../VideoControls";
 import VideoTitle from "../VideoTitle";
 import { makeStyles } from "@material-ui/core";
 import useEventListener from "react-use-event-listener";
-import { useHotkeys } from "react-hotkeys-hook";
 
 const TRAVEL_DISTANCE = 10;
 
@@ -61,7 +60,6 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const toggleMuted = useCallback(() => {
     setIsMuted(!isMuted);
   }, [isMuted]);
-  useHotkeys("m", toggleMuted);
   //#endregion
 
   //#region currentTime and duration
