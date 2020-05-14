@@ -16,6 +16,7 @@ export interface IVideoControls {
   updateCurrentTime: (value: number) => void;
   playbackRate: string;
   updatePlaybackRate: (value: string) => void;
+  watchStartTime: number;
 }
 
 const height = 76;
@@ -51,6 +52,7 @@ export default function VideoControls({
   updateCurrentTime,
   playbackRate,
   updatePlaybackRate,
+  watchStartTime,
 }: IVideoControls): JSX.Element {
   const styles = useStyles();
   return (
@@ -69,6 +71,7 @@ export default function VideoControls({
             currentTime={currentTime}
             duration={duration}
             playbackRate={playbackRate}
+            watchStartTime={watchStartTime}
           />
         </div>
         <PlaybackRate value={playbackRate} updateValue={updatePlaybackRate} />

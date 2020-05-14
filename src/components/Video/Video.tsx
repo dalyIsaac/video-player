@@ -36,6 +36,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
 
+  const [watchStartTime, setWatchStartTime] = useState<number>(0);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [duration, setDuration] = useState(0);
 
@@ -78,6 +79,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     const video = videoRef.current;
     setIsVideoLoaded(true);
     setDuration(video?.duration || 0);
+    setWatchStartTime(Date.now());
 
     // Play
     setIsPaused(false);
@@ -113,6 +115,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
         updateCurrentTime={updateCurrentTime}
         playbackRate={playbackRate}
         updatePlaybackRate={updatePlaybackRate}
+        watchStartTime={watchStartTime}
       />
     </div>
   );

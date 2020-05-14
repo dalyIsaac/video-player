@@ -1,21 +1,24 @@
 import { Divider, Grid } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { getEpochTimeString, getTime } from "../../utils";
 
 import Label from "./Label";
-import { getTime } from "../../utils";
 
 export interface ICurrentTimeLabel {
   currentTime: number;
   duration: number;
   playbackRate: string;
+  watchStartTime: number;
 }
 
 export default function CurrentTimeLabel({
   currentTime,
   duration,
   playbackRate,
+  watchStartTime,
 }: ICurrentTimeLabel): JSX.Element {
   const [time, setTime] = useState("00:00:00");
+  const [seconds, setSeconds] = useState(0);
   const [remainingTime, setRemainingTime] = useState("00:00:00");
   const [remainingAtRate, setRemainingAtRate] = useState("00:00:00");
 
@@ -27,7 +30,29 @@ export default function CurrentTimeLabel({
 
     const rate = parseFloat(playbackRate) || 1;
     setRemainingAtRate(getTime(remaining / rate));
-  }, [currentTime, duration, playbackRate]);
+  }, [currentTime, duration, playbackRate, watchStartTime]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const watchingItems = useMemo(() => {
+    if (watchStartTime) {
+      return (
+        <React.Fragment>
+          <Divider orientation="vertical" flexItem />
+          <Label>Started {getEpochTimeString(watchStartTime)}</Label>
+          <Divider orientation="vertical" flexItem />
+          <Label>Watching for {getTime(seconds)}</Label>
+        </React.Fragment>
+      );
+    } else {
+      return null;
+    }
+  }, [seconds, watchStartTime]);
 
   return (
     <Grid container alignItems="center">
@@ -36,11 +61,12 @@ export default function CurrentTimeLabel({
         {time}/{getTime(duration)}
       </Label>
       <Divider orientation="vertical" flexItem />
-      <Label>{remainingTime} remaining</Label>
+      <Label>-{remainingTime}</Label>
       <Divider orientation="vertical" flexItem />
       <Label>
-        {remainingAtRate} remaining at ×{playbackRate}
+        -{remainingAtRate} @ ×{playbackRate}
       </Label>
+      {watchingItems}
     </Grid>
   );
 }
