@@ -4,6 +4,7 @@ import { Slider } from "@material-ui/core";
 import ValueLabelComponent from "./ValueLabelComponent";
 
 export interface ISeeker {
+  className?: string;
   currentTime: number;
   duration: number;
   updateCurrentTime: (value: number) => void;
@@ -17,6 +18,7 @@ function getValue(value: number | number[]) {
 }
 
 export default function Seeker({
+  className,
   currentTime,
   duration,
   updateCurrentTime,
@@ -30,6 +32,7 @@ export default function Seeker({
 
   return (
     <Slider
+      className={className}
       value={currentTime}
       defaultValue={0}
       max={duration}

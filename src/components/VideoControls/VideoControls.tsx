@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     padding,
   },
+  seeker: {
+    width: `calc(100vw - ${padding * 2}px - 10px)`,
+  },
   interactiveRoot: {
     display: "flex",
     justifyContent: "space-between",
@@ -58,6 +61,7 @@ export default function VideoControls({
   return (
     <div className={styles.root}>
       <Seeker
+        className={styles.seeker}
         currentTime={currentTime}
         duration={duration}
         updateCurrentTime={updateCurrentTime}
