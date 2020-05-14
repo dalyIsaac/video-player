@@ -18,7 +18,7 @@ export default function CurrentTimeLabel({
   watchStartTime,
 }: ICurrentTimeLabel): JSX.Element {
   const [time, setTime] = useState("00:00:00");
-  const [seconds, setSeconds] = useState(0);
+  const [now, setNow] = useState(0);
   const [remainingTime, setRemainingTime] = useState("00:00:00");
   const [remainingAtRate, setRemainingAtRate] = useState("00:00:00");
 
@@ -34,25 +34,30 @@ export default function CurrentTimeLabel({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
+      setNow(Date.now());
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [watchStartTime]);
 
   const watchingItems = useMemo(() => {
     if (watchStartTime) {
+      let diff = (now - watchStartTime) / 1000;
+      if (diff < 0) {
+        diff = 0;
+      }
+
       return (
         <React.Fragment>
           <Divider orientation="vertical" flexItem />
           <Label>Started {getEpochTimeString(watchStartTime)}</Label>
           <Divider orientation="vertical" flexItem />
-          <Label>Watching for {getTime(seconds)}</Label>
+          <Label>Watching for {getTime(diff)}</Label>
         </React.Fragment>
       );
     } else {
       return null;
     }
-  }, [seconds, watchStartTime]);
+  }, [now, watchStartTime]);
 
   return (
     <Grid container alignItems="center">
