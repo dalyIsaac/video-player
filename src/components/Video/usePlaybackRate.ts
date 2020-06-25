@@ -2,25 +2,35 @@ import { PLAYBACKRATE_MAX, PLAYBACKRATE_MIN } from "../PlaybackRate";
 import { useCallback, useState } from "react";
 
 import { Video } from "./utils";
-import { roundPlaybackRate } from "../PlaybackRate/utils";
+import { roundPlaybackRate, PLAYBACKRATE_SCALE } from "../PlaybackRate/utils";
 
 export default function usePlaybackRate(video: Video) {
   const [playbackRate, setPlaybackRate] = useState("1.0");
 
+  /**
+   * @param valueStr Receives the real playback rate value
+   */
   const updatePlaybackRate = useCallback(
     (valueStr: string) => {
-      let value = parseFloat(valueStr);
+      let value = parseFloat(valueStr) * PLAYBACKRATE_SCALE;
+
       if (isNaN(value)) {
         setPlaybackRate("");
-      } else if (video) {
+      } else {
         if (value < PLAYBACKRATE_MIN) {
           value = PLAYBACKRATE_MIN;
         } else if (value > PLAYBACKRATE_MAX) {
           value = PLAYBACKRATE_MAX;
         }
+
+        value /= PLAYBACKRATE_SCALE;
         valueStr = roundPlaybackRate(value);
+
         setPlaybackRate(valueStr);
-        video.playbackRate = value;
+
+        if (video) {
+          video.playbackRate = value;
+        }
       }
     },
     [video]
@@ -29,7 +39,11 @@ export default function usePlaybackRate(video: Video) {
   const addToPlaybackRate = useCallback(
     (delta: number) => {
       if (video) {
-        updatePlaybackRate(String(video.playbackRate + delta));
+        delta = Math.ceil(delta);
+        let value =
+          Math.round(video.playbackRate * PLAYBACKRATE_SCALE + delta) /
+          PLAYBACKRATE_SCALE;
+        updatePlaybackRate(value.toString());
       }
     },
     [updatePlaybackRate, video]
