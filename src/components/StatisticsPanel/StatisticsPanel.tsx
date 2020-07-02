@@ -18,6 +18,7 @@ export interface IStatisticsPanel {
   now: number;
   remainingTime: string;
   remainingAtRate: string;
+  isVisible: boolean;
   watchStartTime: number;
 }
 
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
 });
 
 export default function StatisticsPanel({
+  isVisible,
   time,
   duration,
   playbackRate,
@@ -42,13 +44,20 @@ export default function StatisticsPanel({
   const styles = useStyles();
   const nodeRef = useRef(null);
 
+  const zIndex = useMemo(() => {
+    if (isVisible) {
+      return 100;
+    }
+    return -1;
+  }, [isVisible]);
+
   const watchingFor = useMemo(() => {
     return getTime((now - watchStartTime) / 1000);
   }, [now, watchStartTime]);
 
   return (
     <Draggable nodeRef={nodeRef} bounds="body">
-      <span ref={nodeRef} className={styles.root}>
+      <span ref={nodeRef} className={styles.root} style={{ zIndex }}>
         <Card>
           <CardContent>
             <Table size="small">

@@ -7,8 +7,11 @@ import { makeStyles } from "@material-ui/core";
 import { getTime } from "../../utils";
 import Label from "../Label";
 import StatisticsPanel from "../StatisticsPanel";
+import StatisticsButton from "../StatisticsButton";
 
 export interface IVideoControls {
+  isStatsVisible: boolean;
+  toggleIsStatsVisible: () => void;
   duration: number;
   currentTime: number;
   isPaused: boolean;
@@ -51,6 +54,8 @@ const useStyles = makeStyles({
 });
 
 export default function VideoControls({
+  isStatsVisible,
+  toggleIsStatsVisible,
   duration,
   currentTime,
   isPaused,
@@ -104,10 +109,15 @@ export default function VideoControls({
         <div className={styles.interactiveRootLeft}>
           <PlayButton isPaused={isPaused} togglePaused={togglePaused} />
           <MuteButton isMuted={isMuted} toggleMuted={toggleMuted} />
+          <StatisticsButton
+            isVisible={isStatsVisible}
+            toggleIsVisible={toggleIsStatsVisible}
+          />
         </div>
         <PlaybackRate value={playbackRate} updateValue={updatePlaybackRate} />
       </div>
       <StatisticsPanel
+        isVisible={isStatsVisible}
         time={time}
         duration={getTime(duration)}
         playbackRate={playbackRate}
