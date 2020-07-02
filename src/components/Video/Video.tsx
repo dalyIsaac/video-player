@@ -12,6 +12,13 @@ import useMute from "./useMute";
 import usePause from "./usePause";
 import usePlaybackRate from "./usePlaybackRate";
 import useWheelShortcuts from "./useWheelShortcuts";
+import useStatistics, {
+  StatisticsVisible,
+  ToggleStatisticsVisible,
+  StatisticsPosition,
+  UpdateStatisticsPosition,
+} from "./useStatistics";
+import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
 
 export interface IVideo {
   src?: string;
@@ -60,10 +67,12 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     addToPlaybackRate,
   } = usePlaybackRate(videoRef.current);
 
-  const [isStatsVisible, setIsStatsVisible] = useState(true);
-  const toggleIsStatsVisible = useCallback(() => {
-    setIsStatsVisible(!isStatsVisible);
-  }, [isStatsVisible]);
+  const {
+    isStatsVisible,
+    toggleIsStatsVisible,
+    position: statsPosition,
+    updatePosition: updateStatsPosition,
+  } = useStatistics(STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH);
 
   // Keyboard shortcuts
   const onKeyDown = useKeyboardShortcuts({
@@ -111,20 +120,26 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
         onPause={onPause}
         onPlay={onPlay}
       />
-      <VideoControls
-        isStatsVisible={isStatsVisible}
-        toggleIsStatsVisible={toggleIsStatsVisible}
-        isPaused={isPaused}
-        togglePaused={togglePaused}
-        isMuted={isMuted}
-        toggleMuted={toggleMuted}
-        duration={duration}
-        currentTime={currentTime}
-        updateCurrentTime={updateCurrentTime}
-        playbackRate={playbackRate}
-        updatePlaybackRate={updatePlaybackRate}
-        watchStartTime={watchStartTime}
-      />
+      <StatisticsVisible.Provider value={isStatsVisible}>
+        <ToggleStatisticsVisible.Provider value={toggleIsStatsVisible}>
+          <StatisticsPosition.Provider value={statsPosition}>
+            <UpdateStatisticsPosition.Provider value={updateStatsPosition}>
+              <VideoControls
+                isPaused={isPaused}
+                togglePaused={togglePaused}
+                isMuted={isMuted}
+                toggleMuted={toggleMuted}
+                duration={duration}
+                currentTime={currentTime}
+                updateCurrentTime={updateCurrentTime}
+                playbackRate={playbackRate}
+                updatePlaybackRate={updatePlaybackRate}
+                watchStartTime={watchStartTime}
+              />
+            </UpdateStatisticsPosition.Provider>
+          </StatisticsPosition.Provider>
+        </ToggleStatisticsVisible.Provider>
+      </StatisticsVisible.Provider>
     </div>
   );
 }
