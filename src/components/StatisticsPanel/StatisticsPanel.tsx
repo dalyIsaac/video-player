@@ -8,8 +8,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  IconButton,
 } from "@material-ui/core";
 import { getTime, getEpochTimeString } from "../../utils";
+import { Close } from "@material-ui/icons";
 
 export interface IStatisticsPanel {
   time: string;
@@ -19,6 +21,7 @@ export interface IStatisticsPanel {
   remainingTime: string;
   remainingAtRate: string;
   isVisible: boolean;
+  toggleIsVisible: () => void;
   watchStartTime: number;
 }
 
@@ -29,10 +32,14 @@ const useStyles = makeStyles({
     top: 300,
     width: 400,
   },
+  closeButton: {
+    float: "right",
+  },
 });
 
 export default function StatisticsPanel({
   isVisible,
+  toggleIsVisible,
   time,
   duration,
   playbackRate,
@@ -60,6 +67,13 @@ export default function StatisticsPanel({
       <span ref={nodeRef} className={styles.root} style={{ zIndex }}>
         <Card>
           <CardContent>
+            <IconButton
+              aria-label="Close statistics panel"
+              className={styles.closeButton}
+              onClick={toggleIsVisible}
+            >
+              <Close />
+            </IconButton>
             <Table size="small">
               <TableBody>
                 <TableRow>

@@ -118,6 +118,7 @@ export default function VideoControls({
       </div>
       <StatisticsPanel
         isVisible={isStatsVisible}
+        toggleIsVisible={toggleIsStatsVisible}
         time={time}
         duration={getTime(duration)}
         playbackRate={playbackRate}
