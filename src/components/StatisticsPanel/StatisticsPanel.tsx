@@ -65,7 +65,7 @@ export default function StatisticsPanel({
   return (
     <Draggable nodeRef={nodeRef} bounds="body">
       <span ref={nodeRef} className={styles.root} style={{ zIndex }}>
-        <Card>
+        <Card style={{ opacity: 0.8 }}>
           <CardContent>
             <IconButton
               aria-label="Close statistics panel"
