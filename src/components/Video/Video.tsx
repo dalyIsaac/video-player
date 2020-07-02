@@ -36,7 +36,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
 
-  const [watchStartTime, setWatchStartTime] = useState<number>(0);
+  const [watchStartTime, setWatchStartTime] = useState(0);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [duration, setDuration] = useState(0);
 
@@ -60,6 +60,11 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     addToPlaybackRate,
   } = usePlaybackRate(videoRef.current);
 
+  const [isStatsVisible, setIsStatsVisible] = useState(true);
+  const toggleIsStatsVisible = useCallback(() => {
+    setIsStatsVisible(!isStatsVisible);
+  }, [isStatsVisible]);
+
   // Keyboard shortcuts
   const onKeyDown = useKeyboardShortcuts({
     addToCurrentTime,
@@ -67,6 +72,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     selectSrc,
     toggleMuted,
     togglePaused,
+    toggleIsStatsVisible,
   });
   useEventListener("keydown", onKeyDown, document);
 
@@ -106,6 +112,8 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
         onPlay={onPlay}
       />
       <VideoControls
+        isStatsVisible={isStatsVisible}
+        toggleIsStatsVisible={toggleIsStatsVisible}
         isPaused={isPaused}
         togglePaused={togglePaused}
         isMuted={isMuted}
