@@ -1,5 +1,12 @@
-import React, { useRef, useMemo } from "react";
-import Draggable from "react-draggable";
+import React, {
+  useRef,
+  useMemo,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import Draggable, { DraggableEvent } from "react-draggable";
 import {
   makeStyles,
   Card,
@@ -12,6 +19,12 @@ import {
 } from "@material-ui/core";
 import { getTime, getEpochTimeString } from "../../utils";
 import { Close } from "@material-ui/icons";
+import {
+  StatisticsVisible,
+  ToggleStatisticsVisible,
+  StatisticsPosition,
+  UpdateStatisticsPosition,
+} from "../Video/useStatistics";
 
 export interface IStatisticsPanel {
   time: string;
@@ -20,16 +33,12 @@ export interface IStatisticsPanel {
   now: number;
   remainingTime: string;
   remainingAtRate: string;
-  isVisible: boolean;
-  toggleIsVisible: () => void;
   watchStartTime: number;
 }
 
 const useStyles = makeStyles({
   root: {
     position: "absolute",
-    left: 300,
-    top: 300,
     width: 400,
   },
   closeButton: {
@@ -38,8 +47,6 @@ const useStyles = makeStyles({
 });
 
 export default function StatisticsPanel({
-  isVisible,
-  toggleIsVisible,
   time,
   duration,
   playbackRate,
@@ -49,22 +56,45 @@ export default function StatisticsPanel({
   watchStartTime,
 }: IStatisticsPanel): JSX.Element {
   const styles = useStyles();
-  const nodeRef = useRef(null);
+  const nodeRef = useRef<HTMLSpanElement | null>(null);
 
-  const zIndex = useMemo(() => {
+  const isVisible = useContext(StatisticsVisible);
+  const toggleIsVisible = useContext(ToggleStatisticsVisible);
+  const position = useContext(StatisticsPosition);
+  const updatePosition = useContext(UpdateStatisticsPosition);
+
+  const [renderedPosition] = useState({ ...position });
+  const [zIndex, setZIndex] = useState(-1);
+
+  useEffect(() => {
     if (isVisible) {
-      return 100;
+      setZIndex(100);
+    } else {
+      setZIndex(-1);
     }
-    return -1;
-  }, [isVisible]);
+  }, [isVisible, position, zIndex]);
 
   const watchingFor = useMemo(() => {
     return getTime((now - watchStartTime) / 1000);
   }, [now, watchStartTime]);
 
+  const onStop = useCallback(
+    (e: DraggableEvent) => {
+      if (nodeRef.current) {
+        const { top, left } = nodeRef.current.getBoundingClientRect();
+        updatePosition(top, left);
+      }
+    },
+    [updatePosition]
+  );
+
   return (
-    <Draggable nodeRef={nodeRef} bounds="body">
-      <span ref={nodeRef} className={styles.root} style={{ zIndex }}>
+    <Draggable nodeRef={nodeRef} bounds="body" onStop={onStop}>
+      <span
+        ref={nodeRef}
+        className={styles.root}
+        style={{ zIndex, ...renderedPosition }}
+      >
         <Card style={{ opacity: 0.8 }}>
           <CardContent>
             <IconButton

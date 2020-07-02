@@ -1,17 +1,19 @@
 import MuteButton from "../MuteButton";
 import PlayButton from "../Play";
 import PlaybackRate from "../PlaybackRate";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Seeker from "../Seeker";
 import { makeStyles } from "@material-ui/core";
 import { getTime } from "../../utils";
 import Label from "../Label";
 import StatisticsPanel from "../StatisticsPanel";
 import StatisticsButton from "../StatisticsButton";
+import {
+  StatisticsVisible,
+  ToggleStatisticsVisible,
+} from "../Video/useStatistics";
 
 export interface IVideoControls {
-  isStatsVisible: boolean;
-  toggleIsStatsVisible: () => void;
   duration: number;
   currentTime: number;
   isPaused: boolean;
@@ -54,8 +56,6 @@ const useStyles = makeStyles({
 });
 
 export default function VideoControls({
-  isStatsVisible,
-  toggleIsStatsVisible,
   duration,
   currentTime,
   isPaused,
@@ -68,6 +68,9 @@ export default function VideoControls({
   watchStartTime,
 }: IVideoControls): JSX.Element {
   const styles = useStyles();
+
+  const isStatsVisible = useContext(StatisticsVisible);
+  const toggleIsStatsVisible = useContext(ToggleStatisticsVisible);
 
   const [time, setTime] = useState("00:00:00");
   const [now, setNow] = useState(0);
@@ -117,8 +120,6 @@ export default function VideoControls({
         <PlaybackRate value={playbackRate} updateValue={updatePlaybackRate} />
       </div>
       <StatisticsPanel
-        isVisible={isStatsVisible}
-        toggleIsVisible={toggleIsStatsVisible}
         time={time}
         duration={getTime(duration)}
         playbackRate={playbackRate}
