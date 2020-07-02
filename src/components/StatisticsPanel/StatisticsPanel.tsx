@@ -23,7 +23,9 @@ export interface IStatisticsPanel {
 
 const useStyles = makeStyles({
   root: {
-    height: 200,
+    position: "absolute",
+    left: 300,
+    top: 300,
     width: 400,
   },
 });
@@ -45,7 +47,7 @@ export default function StatisticsPanel({
   }, [now, watchStartTime]);
 
   return (
-    <Draggable defaultPosition={{ x: 0, y: 0 }} nodeRef={nodeRef} bounds="body">
+    <Draggable nodeRef={nodeRef} bounds="body">
       <span ref={nodeRef} className={styles.root}>
         <Card>
           <CardContent>

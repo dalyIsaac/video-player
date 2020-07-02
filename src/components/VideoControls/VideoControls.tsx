@@ -88,15 +88,6 @@ export default function VideoControls({
 
   return (
     <div className={styles.root}>
-      <StatisticsPanel
-        time={time}
-        duration={getTime(duration)}
-        playbackRate={playbackRate}
-        now={now}
-        remainingTime={remainingTime}
-        remainingAtRate={remainingAtRate}
-        watchStartTime={watchStartTime}
-      />
       <div className={styles.seeker}>
         <Label>{time}</Label>
         <Seeker
@@ -113,15 +104,18 @@ export default function VideoControls({
         <div className={styles.interactiveRootLeft}>
           <PlayButton isPaused={isPaused} togglePaused={togglePaused} />
           <MuteButton isMuted={isMuted} toggleMuted={toggleMuted} />
-          {/* <CurrentTimeLabel
-            currentTime={currentTime}
-            duration={duration}
-            playbackRate={playbackRate}
-            watchStartTime={watchStartTime}
-          /> */}
         </div>
         <PlaybackRate value={playbackRate} updateValue={updatePlaybackRate} />
       </div>
+      <StatisticsPanel
+        time={time}
+        duration={getTime(duration)}
+        playbackRate={playbackRate}
+        now={now}
+        remainingTime={remainingTime}
+        remainingAtRate={remainingAtRate}
+        watchStartTime={watchStartTime}
+      />
     </div>
   );
 }
