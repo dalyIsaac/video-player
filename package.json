@@ -16,6 +16,7 @@
     "moment": "^2.26.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-draggable": "^4.4.3",
     "react-scripts": "3.4.1",
     "react-use-event-listener": "^1.1.1",
     "typescript": "~3.9.5"

@@ -36,7 +36,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
 
-  const [watchStartTime, setWatchStartTime] = useState<number>(0);
+  const [watchStartTime, setWatchStartTime] = useState(0);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [duration, setDuration] = useState(0);
 

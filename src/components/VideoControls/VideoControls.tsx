@@ -6,6 +6,7 @@ import Seeker from "../Seeker";
 import { makeStyles } from "@material-ui/core";
 import { getTime } from "../../utils";
 import Label from "../Label";
+import StatisticsPanel from "../StatisticsPanel";
 
 export interface IVideoControls {
   duration: number;
@@ -87,6 +88,15 @@ export default function VideoControls({
 
   return (
     <div className={styles.root}>
+      <StatisticsPanel
+        time={time}
+        duration={getTime(duration)}
+        playbackRate={playbackRate}
+        now={now}
+        remainingTime={remainingTime}
+        remainingAtRate={remainingAtRate}
+        watchStartTime={watchStartTime}
+      />
       <div className={styles.seeker}>
         <Label>{time}</Label>
         <Seeker
