@@ -1,14 +1,15 @@
-import { useState, useCallback } from "react";
-import useWindowSize, { WindowSize } from "@rehooks/window-size";
-import React from "react";
 import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
+import { useCallback, useState } from "react";
+import useWindowSize, { WindowSize } from "@rehooks/window-size";
 
-const TOP = "statistics.position.top";
-const LEFT = "statistics.position.left";
+import React from "react";
+
+const Y_KEY = "statistics.position.y";
+const X_KEY = "statistics.position.x";
 
 export interface Position {
-  top: number;
-  left: number;
+  x: number;
+  y: number;
 }
 
 const getMiddle = (
@@ -23,8 +24,8 @@ const getMiddle = (
   const halfWindowWidth = Math.floor(windowSize.innerWidth / 2);
 
   return {
-    top: halfWindowHeight - halfPanelHeight,
-    left: halfWindowWidth - halfPanelWidth,
+    x: halfWindowWidth - halfPanelWidth,
+    y: halfWindowHeight - halfPanelHeight,
   };
 };
 
@@ -42,33 +43,33 @@ const getKey = (key: string): number | null => {
   return float;
 };
 
-const update = ({ top, left }: Position) => {
-  localStorage.setItem(TOP, top.toString());
-  localStorage.setItem(LEFT, left.toString());
-};
-
+/**
+ * Makes sure that the position is inside the current window.
+ * @param windowSize Current window size
+ * @param panelHeight The height of the settings pane
+ * @param panelWidth The width of the settings pane
+ * @param position The current position of the settings pane
+ */
 const getPositionInsideView = (
   { innerHeight, innerWidth }: WindowSize,
   panelHeight: number,
   panelWidth: number,
   position: Position
 ) => {
-  position = { ...position };
-
-  if (position.top < 0) {
+  if (position.y < 0) {
     // Above
-    position.top = 0;
-  } else if (position.top + panelHeight > innerHeight) {
+    position.y = 0;
+  } else if (position.y + panelHeight > innerHeight) {
     // Bottom
-    position.top = innerHeight - panelHeight;
+    position.y = innerHeight - panelHeight;
   }
 
-  if (position.left < 0) {
+  if (position.x < 0) {
     // Left
-    position.left = 0;
-  } else if (position.left + panelWidth > innerWidth) {
+    position.x = 0;
+  } else if (position.x + panelWidth > innerWidth) {
     // Right
-    position.left = innerWidth - panelWidth;
+    position.x = innerWidth - panelWidth;
   }
 
   return position;
@@ -85,34 +86,53 @@ export default function useStatistics(panelHeight: number, panelWidth: number) {
   // Location
   const windowSize = useWindowSize();
 
-  const getStoredPosition = useCallback((): Position => {
-    const top = getKey(TOP);
-    const left = getKey(LEFT);
+  /**
+   * Gets the stored position, and returns a valid position (within the window).
+   * @param oldPosition Previous position. When this is provided, localStorage
+   * lookup will not be done.
+   */
+  const getPosition = useCallback(
+    (oldPosition?: Partial<Position>): Position => {
+      const x = oldPosition?.x ?? getKey(X_KEY);
+      const y = oldPosition?.y ?? getKey(Y_KEY);
 
-    if (top === null || left === null) {
-      const position = getMiddle(windowSize, panelHeight, panelWidth);
-      update(position);
-      return position;
-    }
+      if (y === null || x === null) {
+        const position = getMiddle(windowSize, panelHeight, panelWidth);
+        return position;
+      }
 
-    const position = getPositionInsideView(
-      windowSize,
-      panelHeight,
-      panelWidth,
-      { top, left }
-    );
+      return getPositionInsideView(windowSize, panelHeight, panelWidth, {
+        y,
+        x,
+      });
+    },
+    [windowSize, panelHeight, panelWidth]
+  );
 
-    return position;
-  }, [windowSize, panelHeight, panelWidth]);
+  const [position, setPosition] = useState<Position>(getPosition());
 
-  const updatePosition = useCallback((top: number, left: number) => {
-    update({ top, left });
-  }, []);
+  /**
+   * Updates the position based on movement or window resizing. The new position
+   * is stored inside both localStorage and React state.
+   * @param x The new x position of the window. Not provided after window
+   * resizing.
+   * @param y The new y position of the window. Not provided after window
+   * resizing.
+   */
+  const updatePosition = useCallback(
+    (x?: number, y?: number) => {
+      const newPosition = getPosition({ x, y });
+      setPosition(newPosition);
+      localStorage.setItem(X_KEY, newPosition.x.toString());
+      localStorage.setItem(Y_KEY, newPosition.y.toString());
+    },
+    [getPosition]
+  );
 
   return {
     isStatsVisible,
     toggleIsStatsVisible,
-    position: getStoredPosition(),
+    position,
     updatePosition,
   };
 }
@@ -133,5 +153,5 @@ export const StatisticsPosition = React.createContext(
   )
 );
 export const UpdateStatisticsPosition = React.createContext(
-  (top: number, left: number) => {}
+  (x?: number, y?: number) => {}
 );

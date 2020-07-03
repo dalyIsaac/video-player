@@ -1,30 +1,32 @@
+import {
+  Card,
+  CardContent,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  makeStyles,
+} from "@material-ui/core";
+import Draggable, { DraggableEvent } from "react-draggable";
 import React, {
-  useRef,
-  useMemo,
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
-import Draggable, { DraggableEvent } from "react-draggable";
 import {
-  makeStyles,
-  Card,
-  CardContent,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  IconButton,
-} from "@material-ui/core";
-import { getTime, getEpochTimeString } from "../../utils";
-import { Close } from "@material-ui/icons";
-import {
+  StatisticsPosition,
   StatisticsVisible,
   ToggleStatisticsVisible,
-  StatisticsPosition,
   UpdateStatisticsPosition,
 } from "../Video/useStatistics";
+import { getEpochTimeString, getTime } from "../../utils";
+
+import { Close } from "@material-ui/icons";
+import useWindowSize from "@rehooks/window-size";
 
 export interface IStatisticsPanel {
   time: string;
@@ -40,6 +42,8 @@ const useStyles = makeStyles({
   root: {
     position: "absolute",
     width: 400,
+    top: 0,
+    left: 0,
   },
   closeButton: {
     float: "right",
@@ -63,7 +67,7 @@ export default function StatisticsPanel({
   const position = useContext(StatisticsPosition);
   const updatePosition = useContext(UpdateStatisticsPosition);
 
-  const [renderedPosition] = useState({ ...position });
+  const windowSize = useWindowSize();
   const [zIndex, setZIndex] = useState(-1);
 
   useEffect(() => {
@@ -74,6 +78,11 @@ export default function StatisticsPanel({
     }
   }, [isVisible, position, zIndex]);
 
+  // Check if the panel needs to move when the window size changes
+  useEffect(() => {
+    updatePosition();
+  }, [updatePosition, windowSize]);
+
   const watchingFor = useMemo(() => {
     return getTime((now - watchStartTime) / 1000);
   }, [now, watchStartTime]);
@@ -82,18 +91,25 @@ export default function StatisticsPanel({
     (e: DraggableEvent) => {
       if (nodeRef.current) {
         const { top, left } = nodeRef.current.getBoundingClientRect();
-        updatePosition(top, left);
+        updatePosition(left, top);
       }
     },
     [updatePosition]
   );
 
   return (
-    <Draggable nodeRef={nodeRef} bounds="body" onStop={onStop}>
+    <Draggable
+      nodeRef={nodeRef}
+      bounds="body"
+      onStop={onStop}
+      position={position}
+    >
       <span
         ref={nodeRef}
         className={styles.root}
-        style={{ zIndex, ...renderedPosition }}
+        style={{
+          zIndex,
+        }}
       >
         <Card style={{ opacity: 0.8 }}>
           <CardContent>
