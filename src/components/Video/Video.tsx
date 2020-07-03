@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { SyntheticEvent, useCallback, useRef, useState } from "react";
 import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
 import useStatistics, {
   StatisticsPosition,
@@ -107,6 +107,13 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     }
   }, [playbackRate, setIsPaused]);
 
+  /**
+   * Used when an event should be ignored.
+   */
+  const eventSink = useCallback((e: SyntheticEvent) => {
+    e.preventDefault();
+  }, []);
+
   return (
     <div className={styles.root}>
       <VideoTitle>{title}</VideoTitle>
@@ -119,6 +126,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
         onTimeUpdate={onTimeUpdate}
         onPause={onPause}
         onPlay={onPlay}
+        onContextMenu={eventSink}
       />
       <StatisticsVisible.Provider value={isStatsVisible}>
         <ToggleStatisticsVisible.Provider value={toggleIsStatsVisible}>
