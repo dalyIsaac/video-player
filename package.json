@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/wicg-mediasession": "^1.0.4",
     "gh-pages": "^2.2.0"
   }
 }

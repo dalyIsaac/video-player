@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core";
 import useCurrentTime from "./useCurrentTime";
 import useEventListener from "react-use-event-listener";
 import useKeyboardShortcuts from "./useKeyboardShortcuts";
+import useMediaSession from "./useMediaSession";
 import useMute from "./useMute";
 import usePause from "./usePause";
 import usePlaybackRate from "./usePlaybackRate";
@@ -113,6 +114,9 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const eventSink = useCallback((e: SyntheticEvent) => {
     e.preventDefault();
   }, []);
+
+  // Title
+  useMediaSession({ title });
 
   return (
     <div className={styles.root}>
