@@ -1,4 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
+import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
+import useStatistics, {
+  StatisticsPosition,
+  StatisticsVisible,
+  ToggleStatisticsVisible,
+  UpdateStatisticsPosition,
+} from "./useStatistics";
 
 import { VIDEO_CONTROLS_HEIGHT } from "../VideoControls/VideoControls";
 import { VIDEO_TITLE_HEIGHT } from "../VideoTitle/VideoTitle";
@@ -12,13 +19,6 @@ import useMute from "./useMute";
 import usePause from "./usePause";
 import usePlaybackRate from "./usePlaybackRate";
 import useWheelShortcuts from "./useWheelShortcuts";
-import useStatistics, {
-  StatisticsVisible,
-  ToggleStatisticsVisible,
-  StatisticsPosition,
-  UpdateStatisticsPosition,
-} from "./useStatistics";
-import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
 
 export interface IVideo {
   src?: string;

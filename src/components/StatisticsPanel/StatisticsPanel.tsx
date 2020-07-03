@@ -84,7 +84,11 @@ export default function StatisticsPanel({
   }, [updatePosition, windowSize]);
 
   const watchingFor = useMemo(() => {
-    return getTime((now - watchStartTime) / 1000);
+    let time = 0;
+    if (watchStartTime !== 0) {
+      time = (now - watchStartTime) / 1000;
+    }
+    return getTime(time);
   }, [now, watchStartTime]);
 
   const onStop = useCallback(
@@ -144,7 +148,11 @@ export default function StatisticsPanel({
                 </TableRow>
                 <TableRow>
                   <TableCell>Watch start time</TableCell>
-                  <TableCell>{getEpochTimeString(watchStartTime)}</TableCell>
+                  <TableCell>
+                    {watchStartTime === 0
+                      ? "N/A"
+                      : getEpochTimeString(watchStartTime)}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Watching for</TableCell>
