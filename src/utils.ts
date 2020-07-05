@@ -4,7 +4,7 @@ import moment from "moment";
  * Gets the time as a string from the number of seconds.
  * @param value Number of seconds
  */
-export function getTime(value: number) {
+export function getTime(value: number): string {
   return new Date(value * 1000).toISOString().substr(11, 8);
 }
 

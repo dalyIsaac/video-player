@@ -8,7 +8,6 @@ import {
   TableRow,
   makeStyles,
 } from "@material-ui/core";
-import Draggable, { DraggableEvent } from "react-draggable";
 import React, {
   useCallback,
   useContext,
@@ -26,6 +25,7 @@ import {
 import { getEpochTimeString, getTime } from "../../utils";
 
 import { Close } from "@material-ui/icons";
+import Draggable from "react-draggable";
 import useWindowSize from "@rehooks/window-size";
 
 export interface IStatisticsPanel {
@@ -39,14 +39,14 @@ export interface IStatisticsPanel {
 }
 
 const useStyles = makeStyles({
-  root: {
-    position: "absolute",
-    width: 400,
-    top: 0,
-    left: 0,
-  },
   closeButton: {
     float: "right",
+  },
+  root: {
+    left: 0,
+    position: "absolute",
+    top: 0,
+    width: 400,
   },
 });
 
@@ -91,15 +91,12 @@ export default function StatisticsPanel({
     return getTime(time);
   }, [now, watchStartTime]);
 
-  const onStop = useCallback(
-    (e: DraggableEvent) => {
-      if (nodeRef.current) {
-        const { top, left } = nodeRef.current.getBoundingClientRect();
-        updatePosition(left, top);
-      }
-    },
-    [updatePosition]
-  );
+  const onStop = useCallback(() => {
+    if (nodeRef.current) {
+      const { top, left } = nodeRef.current.getBoundingClientRect();
+      updatePosition(left, top);
+    }
+  }, [updatePosition]);
 
   return (
     <Draggable

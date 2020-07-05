@@ -27,7 +27,7 @@ export default function Seeker({
     (e: any, value: number | number[]) => {
       updateCurrentTime(getValue(value));
     },
-    [updateCurrentTime]
+    [updateCurrentTime],
   );
 
   return (

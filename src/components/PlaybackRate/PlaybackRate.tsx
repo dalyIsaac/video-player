@@ -24,7 +24,7 @@ export default function PlaybackRate({
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
       updateValue(e.currentTarget.value);
     },
-    [updateValue]
+    [updateValue],
   );
 
   const onBlur = useCallback(() => {
@@ -43,8 +43,8 @@ export default function PlaybackRate({
       onChange={onChange}
       onBlur={onBlur}
       inputProps={{
-        step: PLAYBACKRATE_STEP,
         "aria-label": "Video playback rate",
+        step: PLAYBACKRATE_STEP,
       }}
     />
   );

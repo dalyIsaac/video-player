@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { Video } from "./utils";
-
-export default function useMute(video: Video) {
+export default function useMute() {
   const [isMuted, setIsMuted] = useState(false);
 
   const toggleMuted = useCallback(() => {

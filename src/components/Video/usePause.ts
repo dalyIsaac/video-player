@@ -24,5 +24,5 @@ export default function usePause(video: Video, videoLoaded: boolean) {
     setIsPaused(false);
   }, []);
 
-  return { isPaused, setIsPaused, togglePaused, onPause, onPlay };
+  return { isPaused, onPause, onPlay, setIsPaused, togglePaused };
 }

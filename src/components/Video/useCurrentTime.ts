@@ -12,7 +12,7 @@ export default function useCurrentTime(video: Video, duration: number) {
       }
       setCurrentTime(value);
     },
-    [video]
+    [video],
   );
 
   const addToCurrentTime = useCallback(
@@ -29,7 +29,7 @@ export default function useCurrentTime(video: Video, duration: number) {
         updateCurrentTime(value);
       }
     },
-    [duration, updateCurrentTime, video]
+    [duration, updateCurrentTime, video],
   );
 
   const onTimeUpdate = useCallback(() => {
@@ -40,10 +40,10 @@ export default function useCurrentTime(video: Video, duration: number) {
   }, [updateCurrentTime, video]);
 
   return {
+    addToCurrentTime,
     currentTime,
+    onTimeUpdate,
     setCurrentTime,
     updateCurrentTime,
-    addToCurrentTime,
-    onTimeUpdate,
   };
 }

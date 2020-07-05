@@ -1,14 +1,14 @@
 import { PLAYBACKRATE_MAX, PLAYBACKRATE_MIN } from "../PlaybackRate";
+import { PLAYBACKRATE_SCALE, roundPlaybackRate } from "../PlaybackRate/utils";
 import { useCallback, useState } from "react";
 
 import { Video } from "./utils";
-import { roundPlaybackRate, PLAYBACKRATE_SCALE } from "../PlaybackRate/utils";
 
 const PLAYBACK_RATE = "PLAYBACK_RATE";
 
 export default function usePlaybackRate(video: Video) {
   const [playbackRate, setPlaybackRate] = useState(
-    localStorage.getItem(PLAYBACK_RATE) || "1.0"
+    localStorage.getItem(PLAYBACK_RATE) || "1.0",
   );
 
   /**
@@ -39,26 +39,26 @@ export default function usePlaybackRate(video: Video) {
       setPlaybackRate(newValueStr);
       localStorage.setItem(PLAYBACK_RATE, newValueStr);
     },
-    [video]
+    [video],
   );
 
   const addToPlaybackRate = useCallback(
     (delta: number) => {
       if (video) {
         delta = Math.ceil(delta);
-        let value =
+        const value =
           Math.round(video.playbackRate * PLAYBACKRATE_SCALE + delta) /
           PLAYBACKRATE_SCALE;
         updatePlaybackRate(value.toString());
       }
     },
-    [updatePlaybackRate, video]
+    [updatePlaybackRate, video],
   );
 
   return {
+    addToPlaybackRate,
     playbackRate,
     setPlaybackRate,
     updatePlaybackRate,
-    addToPlaybackRate,
   };
 }
