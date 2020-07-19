@@ -2,7 +2,18 @@ import { useCallback, useState } from "react";
 
 import { Video } from "./utils";
 
-export default function usePause(video: Video, videoLoaded: boolean) {
+export interface IUsePause {
+  isPaused: boolean;
+  onPause: () => void;
+  onPlay: () => void;
+  setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
+  togglePaused: () => void;
+}
+
+export default function usePause(
+  video: Video,
+  videoLoaded: boolean,
+): IUsePause {
   const [isPaused, setIsPaused] = useState(true);
 
   const togglePaused = useCallback(() => {

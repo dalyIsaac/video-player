@@ -6,7 +6,14 @@ import { Video } from "./utils";
 
 const PLAYBACK_RATE = "PLAYBACK_RATE";
 
-export default function usePlaybackRate(video: Video) {
+export interface IUsePlaybackRate {
+  addToPlaybackRate: (delta: number) => void;
+  playbackRate: string;
+  setPlaybackRate: React.Dispatch<React.SetStateAction<string>>;
+  updatePlaybackRate: (recvValueStr: string) => void;
+}
+
+export default function usePlaybackRate(video: Video): IUsePlaybackRate {
   const [playbackRate, setPlaybackRate] = useState(
     localStorage.getItem(PLAYBACK_RATE) || "1.0",
   );

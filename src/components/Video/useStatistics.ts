@@ -75,7 +75,17 @@ const getPositionInsideView = (
   return position;
 };
 
-export default function useStatistics(panelHeight: number, panelWidth: number) {
+export interface IUseStatistics {
+  isStatsVisible: boolean;
+  position: Position;
+  toggleIsStatsVisible: () => void;
+  updatePosition: (x?: number | undefined, y?: number | undefined) => void;
+}
+
+export default function useStatistics(
+  panelHeight: number,
+  panelWidth: number,
+): IUseStatistics {
   // Visibility
   const [isStatsVisible, setIsStatsVisible] = useState(true);
 
@@ -138,7 +148,9 @@ export default function useStatistics(panelHeight: number, panelWidth: number) {
 }
 
 export const StatisticsVisible = React.createContext(false);
-export const ToggleStatisticsVisible = React.createContext(() => {});
+export const ToggleStatisticsVisible = React.createContext(() => {
+  console.log("ToggleStatisticsVisible's context has not yet been set.");
+});
 
 export const StatisticsPosition = React.createContext(
   getMiddle(
@@ -154,5 +166,7 @@ export const StatisticsPosition = React.createContext(
 );
 export const UpdateStatisticsPosition = React.createContext(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (_x?: number, _y?: number): void => {},
+  (_x?: number, _y?: number): void => {
+    console.log("UpdateStatisticsPosition's context has not yet been set.");
+  },
 );

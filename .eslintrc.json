@@ -7,7 +7,7 @@
   "rules": {
     "sort-keys-fix/sort-keys-fix": "warn",
     "@typescript-eslint/indent": ["error", 2],
-    "no-console": "warn",
+    "no-console": "off",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-empty-function": "warn",
@@ -21,7 +21,7 @@
     "require-yield": "error",
     "eqeqeq": ["error", "always"],
     "prefer-const": "error",
-    "max-len": "warn",
+    "max-len": "off",
     "max-depth": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"

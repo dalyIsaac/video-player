@@ -2,7 +2,18 @@ import { useCallback, useState } from "react";
 
 import { Video } from "./utils";
 
-export default function useCurrentTime(video: Video, duration: number) {
+export interface IUseCurrentTime {
+  addToCurrentTime: (delta: number) => void;
+  currentTime: number;
+  onTimeUpdate: () => void;
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
+  updateCurrentTime: (value: number, isEvent?: boolean) => void;
+}
+
+export default function useCurrentTime(
+  video: Video,
+  duration: number,
+): IUseCurrentTime {
   const [currentTime, setCurrentTime] = useState(0);
 
   const updateCurrentTime = useCallback(
