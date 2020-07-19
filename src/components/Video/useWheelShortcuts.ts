@@ -9,22 +9,24 @@ export interface IUseWheelShortcuts {
   addToPlaybackRate: (delta: number) => void;
 }
 
+type OnWheelEvent = (e: WheelEvent) => void;
+
 export default function useWheelShortcuts({
   addToCurrentTime,
   addToPlaybackRate,
-}: IUseWheelShortcuts) {
+}: IUseWheelShortcuts): OnWheelEvent {
   const xWheel = useCallback(
     (val: number) => {
       addToCurrentTime(TRAVEL_DISTANCE * (val / 1000));
     },
-    [addToCurrentTime]
+    [addToCurrentTime],
   );
 
   const yWheel = useCallback(
     (val: number) => {
       addToPlaybackRate(PLAYBACKRATE_STEP * -(val / 100));
     },
-    [addToPlaybackRate]
+    [addToPlaybackRate],
   );
 
   const wheelShortcuts: WheelShortcuts = {
@@ -36,7 +38,7 @@ export default function useWheelShortcuts({
     (e: WheelEvent) => {
       handleWheelShortcuts(e, wheelShortcuts);
     },
-    [wheelShortcuts]
+    [wheelShortcuts],
   );
 
   return onWheel;

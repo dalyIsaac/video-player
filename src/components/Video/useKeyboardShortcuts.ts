@@ -16,6 +16,8 @@ export interface IUseKeyboardShortcuts {
   toggleIsStatsVisible: () => void;
 }
 
+type OnKeyDownEvent = (e: KeyboardEvent) => void;
+
 export default function useKeyboardShortcuts({
   addToCurrentTime,
   addToPlaybackRate,
@@ -23,7 +25,7 @@ export default function useKeyboardShortcuts({
   toggleMuted,
   togglePaused,
   toggleIsStatsVisible: toggleStatistics,
-}: IUseKeyboardShortcuts) {
+}: IUseKeyboardShortcuts): OnKeyDownEvent {
   const leftArrow = () => addToCurrentTime(-TRAVEL_DISTANCE);
 
   const rightArrow = () => addToCurrentTime(TRAVEL_DISTANCE);
@@ -35,7 +37,7 @@ export default function useKeyboardShortcuts({
   const keyboardShortcuts: KeyboardShortcut[] = [
     { key: "m", onKeyDown: toggleMuted },
     { key: " ", onKeyDown: togglePaused },
-    { key: "o", ctrlKey: true, onKeyDown: selectSrc },
+    { ctrlKey: true, key: "o", onKeyDown: selectSrc },
     { key: "s", onKeyDown: toggleStatistics },
     { key: "ArrowLeft", onKeyDown: leftArrow },
     { key: "ArrowRight", onKeyDown: rightArrow },
@@ -47,7 +49,7 @@ export default function useKeyboardShortcuts({
     (e: KeyboardEvent) => {
       handleKeyboardShortcuts(e, keyboardShortcuts);
     },
-    [keyboardShortcuts]
+    [keyboardShortcuts],
   );
 
   return onKeyDown;

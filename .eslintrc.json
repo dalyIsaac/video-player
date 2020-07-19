@@ -1,0 +1,42 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["sort-keys-fix", "@typescript-eslint", "react-hooks"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "sort-keys-fix/sort-keys-fix": "warn",
+    "@typescript-eslint/indent": ["error", 2],
+    "no-console": "off",
+    "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true,
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "require-yield": "error",
+    "eqeqeq": ["error", "always"],
+    "prefer-const": "error",
+    "max-len": "off",
+    "max-depth": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/react",
+    "prettier/@typescript-eslint",
+    "prettier"
+  ],
+  "env": {
+    "jest": true,
+    "browser": true,
+    "es6": true
+  }
+}

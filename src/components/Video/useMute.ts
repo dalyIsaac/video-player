@@ -1,8 +1,12 @@
 import { useCallback, useState } from "react";
 
-import { Video } from "./utils";
+export interface IUseMute {
+  isMuted: boolean;
+  setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleMuted: () => void;
+}
 
-export default function useMute(video: Video) {
+export default function useMute(): IUseMute {
   const [isMuted, setIsMuted] = useState(false);
 
   const toggleMuted = useCallback(() => {

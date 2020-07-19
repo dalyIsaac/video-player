@@ -13,8 +13,8 @@ function keyboardMatch(e: KeyboardEvent, shortcut: KeyboardShortcut): boolean {
 
 export function handleKeyboardShortcuts(
   e: KeyboardEvent,
-  shortcuts: KeyboardShortcut[]
-) {
+  shortcuts: KeyboardShortcut[],
+): void {
   for (const shortcut of shortcuts) {
     if (keyboardMatch(e, shortcut)) {
       shortcut.onKeyDown();
@@ -29,7 +29,10 @@ export interface WheelShortcuts {
   y: (val: number) => void;
 }
 
-export function handleWheelShortcuts(e: WheelEvent, shortcuts: WheelShortcuts) {
+export function handleWheelShortcuts(
+  e: WheelEvent,
+  shortcuts: WheelShortcuts,
+): void {
   if (e.deltaX) {
     shortcuts.x(e.deltaX);
   }

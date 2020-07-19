@@ -1,17 +1,18 @@
-import MuteButton from "../MuteButton";
-import PlayButton from "../Play";
-import PlaybackRate from "../PlaybackRate";
-import React, { useState, useEffect, useContext } from "react";
-import Seeker from "../Seeker";
-import { makeStyles } from "@material-ui/core";
-import { getTime } from "../../utils";
-import Label from "../Label";
-import StatisticsPanel from "../StatisticsPanel";
-import StatisticsButton from "../StatisticsButton";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StatisticsVisible,
   ToggleStatisticsVisible,
 } from "../Video/useStatistics";
+
+import Label from "../Label";
+import MuteButton from "../MuteButton";
+import PlayButton from "../Play";
+import PlaybackRate from "../PlaybackRate";
+import Seeker from "../Seeker";
+import StatisticsButton from "../StatisticsButton";
+import StatisticsPanel from "../StatisticsPanel";
+import { getTime } from "../../utils";
+import { makeStyles } from "@material-ui/core";
 
 export interface IVideoControls {
   duration: number;
@@ -31,11 +32,20 @@ const padding = 16;
 export const VIDEO_CONTROLS_HEIGHT = `${padding * 2 + height}px`;
 
 const useStyles = makeStyles({
-  root: {
-    height,
+  interactiveRoot: {
     display: "flex",
+    justifyContent: "space-between",
+  },
+  interactiveRootLeft: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
+  root: {
     alignContent: "center",
+    display: "flex",
     flexDirection: "column",
+    height,
     padding,
   },
   seeker: {
@@ -43,15 +53,6 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  interactiveRoot: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  interactiveRootLeft: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
   },
 });
 

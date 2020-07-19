@@ -50,10 +50,10 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
 
   const { isPaused, setIsPaused, togglePaused, onPause, onPlay } = usePause(
     videoRef.current,
-    isVideoLoaded
+    isVideoLoaded,
   );
 
-  const { isMuted, toggleMuted } = useMute(videoRef.current);
+  const { isMuted, toggleMuted } = useMute();
 
   const {
     currentTime,
@@ -80,9 +80,9 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     addToCurrentTime,
     addToPlaybackRate,
     selectSrc,
+    toggleIsStatsVisible,
     toggleMuted,
     togglePaused,
-    toggleIsStatsVisible,
   });
   useEventListener("keydown", onKeyDown, document);
 

@@ -24,10 +24,10 @@ export default function Seeker({
   updateCurrentTime,
 }: ISeeker): JSX.Element {
   const onRangeChange = useCallback(
-    (e: any, value: number | number[]) => {
+    (e: unknown, value: number | number[]) => {
       updateCurrentTime(getValue(value));
     },
-    [updateCurrentTime]
+    [updateCurrentTime],
   );
 
   return (
