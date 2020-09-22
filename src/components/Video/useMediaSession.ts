@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export default function useMediaSession(
-  metadata: Partial<MediaMetadata>,
+  metadata: Partial<MediaMetadataInit>,
 ): void {
   useEffect(() => {
     if ("mediaSession" in navigator && navigator.mediaSession) {

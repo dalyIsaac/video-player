@@ -1,5 +1,4 @@
-import moment from "moment";
-
+import format from "date-fns/format";
 /**
  * Gets the time as a string from the number of seconds.
  * @param value Number of seconds
@@ -14,7 +13,6 @@ export function getTime(value: number): string {
  * @param dateTime The number of milliseconds from the UNIX epoch.
  */
 export function getEpochTimeString(dateTime: number): string {
-  const d = new Date(0);
-  d.setUTCMilliseconds(dateTime);
-  return moment(d).format("HH:MM:SS");
+  const d = new Date(dateTime);
+  return format(d, "HH:mm:ss");
 }
