@@ -83,6 +83,7 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
     toggleIsStatsVisible,
     toggleMuted,
     togglePaused,
+    updatePlaybackRate,
   });
   useEventListener("keydown", onKeyDown, document);
 
