@@ -26,30 +26,37 @@ export default function useKeyboardShortcuts({
   togglePaused,
   toggleIsStatsVisible: toggleStatistics,
 }: IUseKeyboardShortcuts): OnKeyDownEvent {
-  const leftArrow = () => addToCurrentTime(-TRAVEL_DISTANCE);
-
-  const rightArrow = () => addToCurrentTime(TRAVEL_DISTANCE);
-
-  const upArrow = () => addToPlaybackRate(PLAYBACKRATE_STEP);
-
-  const downArrow = () => addToPlaybackRate(-PLAYBACKRATE_STEP);
-
-  const keyboardShortcuts: KeyboardShortcut[] = [
-    { key: "m", onKeyDown: toggleMuted },
-    { key: " ", onKeyDown: togglePaused },
-    { ctrlKey: true, key: "o", onKeyDown: selectSrc },
-    { key: "s", onKeyDown: toggleStatistics },
-    { key: "ArrowLeft", onKeyDown: leftArrow },
-    { key: "ArrowRight", onKeyDown: rightArrow },
-    { key: "ArrowUp", onKeyDown: upArrow },
-    { key: "ArrowDown", onKeyDown: downArrow },
-  ];
-
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      const leftArrow = () => addToCurrentTime(-TRAVEL_DISTANCE);
+
+      const rightArrow = () => addToCurrentTime(TRAVEL_DISTANCE);
+
+      const upArrow = () => addToPlaybackRate(PLAYBACKRATE_STEP);
+
+      const downArrow = () => addToPlaybackRate(-PLAYBACKRATE_STEP);
+
+      const keyboardShortcuts: KeyboardShortcut[] = [
+        { key: "m", onKeyDown: toggleMuted },
+        { key: " ", onKeyDown: togglePaused },
+        { ctrlKey: true, key: "o", onKeyDown: selectSrc },
+        { key: "s", onKeyDown: toggleStatistics },
+        { key: "ArrowLeft", onKeyDown: leftArrow },
+        { key: "ArrowRight", onKeyDown: rightArrow },
+        { key: "ArrowUp", onKeyDown: upArrow },
+        { key: "ArrowDown", onKeyDown: downArrow },
+      ];
+
       handleKeyboardShortcuts(e, keyboardShortcuts);
     },
-    [keyboardShortcuts],
+    [
+      addToCurrentTime,
+      addToPlaybackRate,
+      selectSrc,
+      toggleMuted,
+      togglePaused,
+      toggleStatistics,
+    ],
   );
 
   return onKeyDown;

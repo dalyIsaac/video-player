@@ -29,16 +29,16 @@ export default function useWheelShortcuts({
     [addToPlaybackRate],
   );
 
-  const wheelShortcuts: WheelShortcuts = {
-    x: xWheel,
-    y: yWheel,
-  };
-
   const onWheel = useCallback(
     (e: WheelEvent) => {
+      const wheelShortcuts: WheelShortcuts = {
+        x: xWheel,
+        y: yWheel,
+      };
+
       handleWheelShortcuts(e, wheelShortcuts);
     },
-    [wheelShortcuts],
+    [xWheel, yWheel],
   );
 
   return onWheel;
