@@ -128,6 +128,10 @@ export default function StatisticsPanel({
                   <TableCell>{time}</TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Watching for</TableCell>
+                  <TableCell>{watchingFor}</TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>Duration</TableCell>
                   <TableCell>{duration}</TableCell>
                 </TableRow>
@@ -150,10 +154,6 @@ export default function StatisticsPanel({
                       ? "N/A"
                       : getEpochTimeString(watchStartTime)}
                   </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Watching for</TableCell>
-                  <TableCell>{watchingFor}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
