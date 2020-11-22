@@ -40,6 +40,9 @@ const useStyles = makeStyles({
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const eventSink = (e: SyntheticEvent): void => {e.preventDefault()}
+
 export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const styles = useStyles();
@@ -108,13 +111,6 @@ export default function Video({ src, selectSrc, title }: IVideo): JSX.Element {
       video.playbackRate = rate;
     }
   }, [playbackRate, setIsPaused]);
-
-  /**
-   * Used when an event should be ignored.
-   */
-  const eventSink = useCallback((e: SyntheticEvent) => {
-    e.preventDefault();
-  }, []);
 
   // Title
   useMediaSession({ title });
