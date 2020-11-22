@@ -26,7 +26,7 @@ import { getEpochTimeString, getTime } from "../../utils";
 
 import { Close } from "@material-ui/icons";
 import Draggable from "react-draggable";
-import useWindowSize from "@rehooks/window-size";
+import useWindowSize from "../../useWindowSize";
 
 export interface IStatisticsPanel {
   time: string;

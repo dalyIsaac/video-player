@@ -1,6 +1,6 @@
 import { STATS_PANEL_HEIGHT, STATS_PANEL_WIDTH } from "../StatisticsPanel";
 import { useCallback, useState } from "react";
-import useWindowSize, { WindowSize } from "@rehooks/window-size";
+import useWindowSize, { WindowSize } from "../../useWindowSize";
 
 import React from "react";
 
