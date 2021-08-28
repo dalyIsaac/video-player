@@ -1,8 +1,6 @@
 import React, { useCallback } from "react";
 import { TextField, makeStyles } from "@material-ui/core";
 
-import { PLAYBACKRATE_STEP } from "./utils";
-
 export interface IPlaybackRate {
   value: string;
   updateValue: (value: string) => void;
@@ -44,7 +42,7 @@ export default function PlaybackRate({
       onBlur={onBlur}
       inputProps={{
         "aria-label": "Video playback rate",
-        step: PLAYBACKRATE_STEP,
+        step: 0.1,
       }}
     />
   );
