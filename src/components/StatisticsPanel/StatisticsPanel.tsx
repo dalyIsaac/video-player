@@ -46,7 +46,7 @@ const useStyles = makeStyles({
     left: 0,
     position: "absolute",
     top: 0,
-    width: 400,
+    width: 250,
   },
 });
 
@@ -113,7 +113,7 @@ export default function StatisticsPanel({
         }}
       >
         <Card style={{ opacity: 0.8 }}>
-          <CardContent>
+          <CardContent style={{ padding: 0 }}>
             <IconButton
               aria-label="Close statistics panel"
               className={styles.closeButton}
