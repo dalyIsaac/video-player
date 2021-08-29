@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import {
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   useMediaQuery,
 } from "@material-ui/core";
 
@@ -21,7 +21,7 @@ export default function App(): JSX.Element {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = useMemo(
     () =>
-      createMuiTheme({
+      createTheme({
         palette: {
           type: prefersDarkMode ? "dark" : "light",
         },
